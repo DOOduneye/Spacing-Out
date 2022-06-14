@@ -6,12 +6,12 @@
 //import java.util.ArrayList;
 //
 //import controller.QuestionController;
-//import model.AbstractQuestion;
-//import model.Answer;
-//import model.Deck;
+//import model.Cards.AbstractQuestion;
+//import model.Cards.Answer;
+//import model.Cards.Deck;
 //import model.Decks;
-//import model.MultipleChoiceAnswer;
-//import model.Question;
+//import model.Cards.MultipleChoiceAnswer;
+//import model.Cards.Question;
 //
 //public class FlashCardProgram {
 //

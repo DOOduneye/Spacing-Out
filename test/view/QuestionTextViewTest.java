@@ -6,13 +6,11 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import model.AbstractQuestion;
-import model.Answer;
-import model.CorrectAnswer;
-import model.IncorrectAnswer;
-import model.MultipleChoiceAnswer;
-
-import static org.junit.jupiter.api.Assertions.*;
+import model.Cards.AbstractQuestion;
+import model.Cards.Answer;
+import model.Cards.CorrectAnswer;
+import model.Cards.IncorrectAnswer;
+import model.Cards.MultipleChoiceAnswer;
 
 public class QuestionTextViewTest {
   private Answer answer1;

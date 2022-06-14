@@ -1,8 +1,7 @@
 package view;
 
-import model.AbstractQuestion;
-import model.Answer;
-import model.Question;
+import model.Cards.Answer;
+import model.Cards.Question;
 
 import java.io.IOException;
 import java.util.Objects;

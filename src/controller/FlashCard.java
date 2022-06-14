@@ -7,13 +7,13 @@
 //import java.util.Scanner;
 //
 //
-//import model.AbstractQuestion;
-//import model.Answer;
-//import model.CorrectAnswer;
-//import model.Deck;
-//import model.IncorrectAnswer;
-//import model.MultipleChoiceAnswer;
-//import model.Question;
+//import model.Cards.AbstractQuestion;
+//import model.Cards.Answer;
+//import model.Cards.CorrectAnswer;
+//import model.Cards.Deck;
+//import model.Cards.IncorrectAnswer;
+//import model.Cards.MultipleChoiceAnswer;
+//import model.Cards.Question;
 //import view.QuestionTextView;
 //import view.QuestionView;
 //

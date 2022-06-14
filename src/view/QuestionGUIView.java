@@ -2,27 +2,8 @@ package view;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-import model.Answer;
-import model.CorrectAnswer;
-import model.Deck;
-import model.DeckImpl;
-import model.IncorrectAnswer;
-import model.LongAnswer;
-import model.MultipleChoiceAnswer;
-import model.Question;
-import model.ShortAnswer;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.AbstractMap.SimpleEntry;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 public class QuestionGUIView extends Application {
 
