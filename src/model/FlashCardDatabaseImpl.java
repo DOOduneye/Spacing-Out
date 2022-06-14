@@ -11,29 +11,37 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
 import Enviornment.ENV;
 
 
-public class FlashCardDatabaseImpl implements FlashCardDatabase {
+public class Database {
+
+  private static Database INSTANCE;
 
   private ResultSet result;
   private Connection connection;
   private Statement statement;
   private List<Deck> userDecks;
   private Entry<Integer, String> user;
-
   private final Map<Integer, Entry<String, String>> questions;
   private final List<Answer> answers;
   private final ArrayList<Question> questionList;
 
-  FlashCardDatabaseImpl() {
+  private Database() {
     userDecks = new ArrayList<>();
     questions = new HashMap<>();
     answers = new ArrayList<>();
     questionList = new ArrayList<>();
   }
 
-  @Override
+  public static Database getInstance() {
+    if (INSTANCE == null) {
+      INSTANCE = new Database();
+    }
+    return INSTANCE;
+  }
+
   public void start() throws SQLException {
     try {
       this.openConnection();
@@ -43,7 +51,6 @@ public class FlashCardDatabaseImpl implements FlashCardDatabase {
     }
   }
 
-  @Override
   public void openConnection() throws IllegalStateException {
     this.verifyDriver();
 
@@ -58,7 +65,6 @@ public class FlashCardDatabaseImpl implements FlashCardDatabase {
     }
   }
 
-  @Override
   public void closeConnection() throws IllegalStateException {
     try {
       this.statement.close();
@@ -80,7 +86,6 @@ public class FlashCardDatabaseImpl implements FlashCardDatabase {
    *
    * @throws SQLException if the database cannot be accessed
    */
-  @Override
   public void callAPI() throws SQLException {
     this.setUser(1); // TODO: Change this to the current user
 
@@ -159,6 +164,7 @@ public class FlashCardDatabaseImpl implements FlashCardDatabase {
    *
    * @param question the question to set the type of
    */
+  // TODO: Refactor this method
   private void setType(Map.Entry<Integer, Map.Entry<String, String>> question) {
     switch (question.getValue().getValue()) {
       case "multiplechoice":
