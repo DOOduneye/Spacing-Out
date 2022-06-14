@@ -5,7 +5,7 @@ package model;
  * that allow you to get data from the database. It allows you to open a connection
  * to the database, and close the connection.
  */
-public interface FlashCardDatabase {
+public interface Database {
 
   /**
    * Opens a connection to the database. If the connection fails, the program

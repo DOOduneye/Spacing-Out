@@ -14,7 +14,7 @@ import java.util.Map.Entry;
 import Enviornment.ENV;
 
 
-public class FlashCardDatabaseImpl implements FlashCardDatabase {
+public class DatabaseImpl implements Database {
 
   private ResultSet result;
   private Connection connection;
@@ -26,7 +26,7 @@ public class FlashCardDatabaseImpl implements FlashCardDatabase {
   private final List<Answer> answers;
   private final ArrayList<Question> questionList;
 
-  FlashCardDatabaseImpl() {
+  DatabaseImpl() {
     userDecks = new ArrayList<>();
     questions = new HashMap<>();
     answers = new ArrayList<>();
