@@ -2,7 +2,6 @@ package model.Database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -12,7 +11,9 @@ import Enviornment.ENV;
  * This {@code DatabaseStateImpl} class represents the state of the database. Handling the
  * connection between the database and the program.
  */
-public class DatabaseStateImpl implements DatabaseState {
+// TODO: figure out how to protect this class, either through making it package-private or
+//  private or protected
+public final class DatabaseStateImpl implements DatabaseState {
 
   private Connection connection;
   private Statement statement;
@@ -22,7 +23,7 @@ public class DatabaseStateImpl implements DatabaseState {
     return connection != null;
   }
 
-  public void openConnection() throws IllegalStateException {
+  public Statement openConnection() throws IllegalStateException {
     this.verifyDriver();
 
     String url = "jdbc:mysql://localhost:3306/card";
@@ -34,6 +35,8 @@ public class DatabaseStateImpl implements DatabaseState {
     } catch (SQLException e) {
       throw new IllegalStateException("Cannot connect to the database!", e);
     }
+
+    return this.statement;
   }
 
   public void closeConnection() throws IllegalStateException {
@@ -41,22 +44,6 @@ public class DatabaseStateImpl implements DatabaseState {
       this.statement.close();
     } catch (SQLException e) {
       throw new IllegalStateException("Database connection is already closed!", e);
-    }
-  }
-
-  public ResultSet executeQuery(String query) throws IllegalStateException {
-    try {
-      return this.statement.executeQuery(query);
-    } catch (SQLException e) {
-      throw new IllegalStateException("Cannot execute the query!", e);
-    }
-  }
-
-  public int executeUpdate(String query) throws IllegalStateException {
-    try {
-      return this.statement.executeUpdate(query);
-    } catch (SQLException e) {
-      throw new IllegalStateException("Cannot execute the query!", e);
     }
   }
 

@@ -11,8 +11,8 @@ import java.util.Objects;
  */
 public class QuestionTextView implements QuestionView {
   private final Question question;
-  private Appendable out;
-  private StringBuilder text;
+  private final Appendable out;
+  private final StringBuilder text;
   private int letter;
 
   /**

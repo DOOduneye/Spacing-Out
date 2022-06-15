@@ -10,5 +10,5 @@ public interface QuestionController {
   /**
    * This method is used to create a question, and add it to the database.
    */
-  public void run() throws IllegalStateException, IOException;
+  void run() throws IllegalStateException, IOException;
 }

@@ -1,13 +1,13 @@
 package model.Database;
 
-import java.sql.ResultSet;
+import java.sql.Statement;
 
 /**
  * This interface represents the state of a database. It allows you to open a connection
  * to the database, and close the connection. As well as getting the current state of the
  * database.
  */
-public interface DatabaseState {
+interface DatabaseState {
 
   /**
    * Returns the current state of the database.
@@ -23,7 +23,7 @@ public interface DatabaseState {
    *
    * @throws IllegalStateException if it cannot connect to the database
    */
-  void openConnection() throws IllegalStateException;
+  Statement openConnection() throws IllegalStateException;
 
   /**
    * Closes the database connection. If the connection is already closed, the program
@@ -32,24 +32,4 @@ public interface DatabaseState {
    * @throws IllegalStateException if the connection is already closed
    */
   void closeConnection() throws IllegalStateException;
-
-  /**
-   * Executes a query on the database. If the query fails, the program will exit and display an
-   * error message.
-   *
-   * @param query the query to be executed.
-   * @return the result of the query.
-   * @throws IllegalStateException if the query fails to execute
-   */
-  ResultSet executeQuery(String query) throws IllegalStateException;
-
-  /**
-   * Executes an update on the database. This is used for inserts, updates, and deletes. This is
-   * used for inserts, updates, and deletes.
-   *
-   * @param query the query to be executed.
-   * @return the result of the query.
-   * @throws IllegalStateException if the query fails to execute
-   */
-  int executeUpdate(String query) throws IllegalStateException;
 }

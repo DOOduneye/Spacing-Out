@@ -1,12 +1,10 @@
 import java.sql.SQLException;
 
-import model.Database.Database;
+import model.Database.FlashCardDatabase;
 
 public class test {
   public static void main(String[] args) throws SQLException {
-    Database database = Database.INSTANCE;
+    FlashCardDatabase database = new FlashCardDatabase();
     database.callAPI();
-    database.close();
-
   }
 }
