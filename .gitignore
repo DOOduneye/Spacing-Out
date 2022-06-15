@@ -1,5 +1,8 @@
 # YOUR-FILE-WITH-SENSITIVE-DATA
 
+#Javadocs
+javadoc/
+
 # User-specific stuff
 .idea/**/workspace.xml
 .idea/**/tasks.xml

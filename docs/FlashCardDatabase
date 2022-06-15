@@ -1,0 +1,15 @@
+
+What should the database do?
+
+It should be able to store the data in a database.
+
+It should be able to retrieve the data from the database.
+
+Uses the query object to do things such as insert, delete, update, and select.
+
+Limit the ability to send in SQL commands to the database:
+    INSERT
+    DELETE
+    UPDATE
+    SELECT
+        and their available subqueries.

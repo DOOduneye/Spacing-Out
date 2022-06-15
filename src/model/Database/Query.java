@@ -1,26 +1,20 @@
 package model.Database;
 
-import java.sql.ResultSet;
+import java.io.IOException;
 
+/**
+ * This class is used to create a query to be used in the database.
+ * It is used to create a query that can be used to retrieve data from the database.
+ * Queries are a hierarchical structure that can be used to retrieve data from the database.
+ * The query is built by adding functions in a QueryBuilder object.
+ */
 public interface Query {
 
-  /**
-   * Executes a query on the database. If the query fails, the program will exit and display an
-   * error message.
-   *
-   * @param query the query to be executed.
-   * @return the result of the query.
-   * @throws IllegalStateException if the query fails to execute
-   */
-  ResultSet executeQuery(String query) throws IllegalStateException;
+  QueryBuilder SELECT(String... columns) throws IOException;
 
-  /**
-   * Executes an update on the database. This is used for inserts, updates, and deletes. This is
-   * used for inserts, updates, and deletes.
-   *
-   * @param query the query to be executed.
-   * @return the result of the query.
-   * @throws IllegalStateException if the query fails to execute
-   */
-  int executeUpdate(String query) throws IllegalStateException;
+  QueryBuilder INSERT(String table) throws IOException;
+
+  QueryBuilder UPDATE(String table) throws IOException;
+
+  QueryBuilder DELETE(String table) throws IOException;
 }

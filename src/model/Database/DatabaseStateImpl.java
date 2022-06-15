@@ -26,10 +26,8 @@ public final class DatabaseStateImpl implements DatabaseState {
   public Statement openConnection() throws IllegalStateException {
     this.verifyDriver();
 
-    String url = "jdbc:mysql://localhost:3306/card";
-
     try {
-      this.connection = DriverManager.getConnection(url, "root", ENV.PASSWORD);
+      this.connection = DriverManager.getConnection(ENV.URL, ENV.USER, ENV.PASSWORD);
       this.statement = connection.createStatement();
 
     } catch (SQLException e) {
@@ -55,7 +53,7 @@ public final class DatabaseStateImpl implements DatabaseState {
    */
   private void verifyDriver() throws IllegalStateException {
     try {
-      Class.forName("com.mysql.cj.jdbc.Driver");
+      Class.forName(ENV.DRIVER);
     } catch (ClassNotFoundException e) {
       throw new IllegalStateException("Cannot find the JDBC driver!", e);
     }

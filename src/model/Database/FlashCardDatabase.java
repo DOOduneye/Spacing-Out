@@ -1,5 +1,6 @@
 package model.Database;
 
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -54,10 +55,10 @@ public class FlashCardDatabase {
    *
    * @throws SQLException if the database cannot be accessed
    */
-  public void callAPI() throws SQLException {
+  public void callAPI() throws SQLException, IOException {
     this.setUser(1); // TODO: Change this to the current user
 
-    this.result = this.query.executeQuery("SELECT * FROM deck WHERE user_id = " + this.user.getKey());
+    this.result = this.query.SELECT("*").FROM("deck").WHERE("user_id = " + this.user.getKey()).query();
 
     Map<String, String> deckNames = new HashMap<>();
 
@@ -79,13 +80,29 @@ public class FlashCardDatabase {
    * @return the questions
    * @throws SQLException if the query fails
    */
-  private Question[] getQuestions(String deckName) throws SQLException {
-    this.result = this.query.executeQuery("SELECT *"
-            + "FROM users u "
-            + "JOIN deck d ON u.user_id = d.user_id "
-            + "JOIN question q ON d.deck_id = q.deck_id "
-            + "JOIN question_type qt ON q.question_type_id = qt.question_type_id "
-            + "WHERE u.user_id = " + this.user.getKey() + " AND d.name = '" + deckName + "'");
+  private Question[] getQuestions(String deckName) throws SQLException, IOException {
+    this.result = this.query
+            .SELECT("*")
+            .FROM("users u")
+            .JOIN("deck d").ON("u.user_id = d.user_id")
+            .JOIN("question q").ON("d.deck_id = q.deck_id")
+            .JOIN("question_type qt").ON("q.question_type_id = qt.question_type_id")
+            .WHERE("u.user_id = " + this.user.getKey())
+            .AND("d.name = '" + deckName + "'")
+            .query();
+
+    // Create a heiarchy
+    // Query -> Select, Insert Into, Delete, Update
+    // Select -> From, Where, Join, Group By, Order By, Having, Union, Intersect, Except
+    // Insert Into -> Table, Values, Select
+    // Delete -> From, Where, Join, Group By, Order By, Having, Union, Intersect, Except
+    // Update -> Table, Set, Where, Join, Group By, Order By, Having, Union, Intersect, Except
+    //"SELECT *"
+    //            z+ "FROM users u "
+    //            + "JOIN deck d ON u.user_id = d.user_id "
+    //            + "JOIN question q ON d.deck_id = q.deck_id "
+    //            + "JOIN question_type qt ON q.question_type_id = qt.question_type_id "
+    //            + "WHERE u.user_id = " + this.user.getKey() + " AND d.name = '" + deckName + "'"
 
     // QUERY: Gets the question's text, type
     while (this.result.next()) {
@@ -107,10 +124,11 @@ public class FlashCardDatabase {
    * @return the answers
    * @throws SQLException if the query fails
    */
-  private Answer[] getAnswers() throws SQLException {
+  private Answer[] getAnswers() throws SQLException, IOException {
     for (Map.Entry<Integer, Map.Entry<String, String>> question : questions.entrySet()) {
-      this.result = this.query.executeQuery("SELECT * FROM answers WHERE question_id = "
-              + question.getKey());
+      this.result = this.query.SELECT("*")
+              .FROM("answers")
+              .WHERE("question_id = " + question.getKey()).query();
 
       // QUERY: Gets the answer's text, correct/incorrect
       while (this.result.next()) {
@@ -158,9 +176,9 @@ public class FlashCardDatabase {
    *
    * @param id the user's id
    */
-  private void setUser(int id) throws SQLException {
+  private void setUser(int id) throws SQLException, IOException {
     this.userDecks = new ArrayList<>();
-    this.result = this.query.executeQuery("SELECT * FROM users WHERE user_id = " + id);
+    this.result = this.query.SELECT("*").FROM("users").WHERE("user_id = " + id + ";").query();
 
     /* QUERY: Gets the username and user id and stores them in a hashmap */
     this.result.next();
