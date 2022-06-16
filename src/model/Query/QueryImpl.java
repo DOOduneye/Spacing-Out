@@ -1,8 +1,9 @@
-package model.Database;
+package model.Query;
 
 import java.io.IOException;
 import java.sql.Statement;
 
+import model.Database.Database;
 import model.Database.functions.DELETE;
 import model.Database.functions.INSERT;
 import model.Database.functions.SELECT;
@@ -22,7 +23,7 @@ public final class QueryImpl implements Query {
   }
 
   @Override
-  public QueryBuilder SELECT(String... columns) throws IOException {
+  public QueryBuilder SELECT(String... columns) {
     this.query = new StringBuilder();
     StringBuilder columnsString = new StringBuilder();
     for (int i = 0; i < columns.length; i++) {
@@ -36,33 +37,17 @@ public final class QueryImpl implements Query {
   }
 
   @Override
-  public QueryBuilder INSERT(String table) throws IOException {
+  public QueryBuilder INSERT(String table)  {
     return new QueryBuilder(this.statement, query.append(new INSERT().apply(table)));
   }
 
   @Override
-  public QueryBuilder UPDATE(String table) throws IOException {
+  public QueryBuilder UPDATE(String table)  {
     return new QueryBuilder(this.statement, query.append(new UPDATE().apply(table)));
   }
 
   @Override
-  public QueryBuilder DELETE(String table) throws IOException {
+  public QueryBuilder DELETE(String table)  {
     return new QueryBuilder(this.statement, query.append(new DELETE().apply(table)));
   }
-
-//  public ResultSet executeQuery(Function<String, String> function, String query) throws IllegalStateException {
-//    try {
-//      return this.statement.executeQuery(function.apply(query));
-//    } catch (SQLException e) {
-//      throw new IllegalStateException("Failed to execute query: " + query, e);
-//    }
-//  }
-//
-//  public void executeUpdate(Function<String, String> function, String query) throws IllegalStateException {
-//    try {
-//      this.statement.executeUpdate(function.apply(query));
-//    } catch (SQLException e) {
-//      throw new IllegalStateException("Cannot execute the query!", e);
-//    }
-//  }
 }

@@ -12,3 +12,15 @@
     1) Short response
     2) Long response
 3) Multiple choice
+
+-> Replace Answer Interface with an enum -> Takes advantage of HashMaps, more efficient
+
+ * HashMap<String, AnswerType> answers = new HashMap<String, AnswerType>();
+ * answers.put("A", AnswerType.CORRECT);
+ * answers.put("B", AnswerType.INCORRECT);
+ * answers.put("C", AnswerType.INCORRECT);
+ * answers.put("D", AnswerType.INCORRECT);
+ * answers.put("E", AnswerType.CORRECT);
+
+
+ Handle a question with a hashmap

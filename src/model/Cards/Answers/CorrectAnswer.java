@@ -1,11 +1,11 @@
-package model.Cards;
+package model.Cards.Answers;
 
 import java.util.Objects;
 
 /**
  * This class represents a correct answer.
  */
-public class CorrectAnswer implements Answer {
+public final class CorrectAnswer implements Answer {
   private final String answer;
 
   /**

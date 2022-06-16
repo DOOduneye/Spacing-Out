@@ -1,7 +1,7 @@
 //package view;
 //
-//import model.Cards.Answer;
-//import model.Cards.Question;
+//import model.Cards.Answer.Answer;
+//import model.Cards.Questions.Question;
 //
 //import java.io.IOException;
 //import java.util.Objects;

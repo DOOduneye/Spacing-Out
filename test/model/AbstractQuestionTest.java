@@ -5,13 +5,13 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 
-import model.Cards.AbstractQuestion;
-import model.Cards.Answer;
-import model.Cards.CorrectAnswer;
-import model.Cards.IncorrectAnswer;
+import model.Cards.Questions.AbstractQuestion;
+import model.Cards.Answers.Answer;
+import model.Cards.Answers.CorrectAnswer;
+import model.Cards.Answers.IncorrectAnswer;
 import model.Cards.LongAnswer;
 import model.Cards.MultipleChoiceAnswer;
-import model.Cards.ShortAnswer;
+import model.Cards.Questions.Short;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -46,7 +46,7 @@ public class AbstractQuestionTest {
 
     question = new MultipleChoiceAnswer("What is the capital of France?", answers);
     question2 = new LongAnswer("What is the capital of France?", answers);
-    question3 = new ShortAnswer("What is the capital of France?", answers);
+    question3 = new Short("What is the capital of France?", answers);
   }
 
   @Test

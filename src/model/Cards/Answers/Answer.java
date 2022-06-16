@@ -1,4 +1,4 @@
-package model.Cards;
+package model.Cards.Answers;
 
 /**
  * This class represents an answer to a question.
@@ -10,7 +10,9 @@ public interface Answer {
    *
    * @return true if the answer is correct, false otherwise.
    */
-  boolean isCorrect();
+  default boolean isCorrect() {
+    return false;
+  }
 
   /**
    * The answer.
