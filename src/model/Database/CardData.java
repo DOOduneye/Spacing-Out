@@ -5,18 +5,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.AbstractMap.SimpleEntry;
 
 import model.Cards.Answers.Answer;
 import model.Cards.Answers.AnswerFactory;
 import model.Cards.Answers.AnswerType;
-import model.Cards.Answers.CorrectAnswer;
 import model.Cards.Decks.Deck;
 import model.Cards.Decks.DeckBuilder;
-import model.Cards.Decks.DeckImpl;
-import model.Cards.Answers.IncorrectAnswer;
 import model.Cards.Questions.Question;
 import model.Cards.Questions.QuestionBuilder;
 import model.Cards.Questions.QuestionType;
@@ -26,22 +22,23 @@ import model.Query.QueryImpl;
 public class CardData {
   private final Query query;
   private ResultSet result;
-  private List<Deck> userDecks;
   private Entry<Integer, String> user;
-  private final List<Answer> answers;
-  private final ArrayList<Question> questionList;
   private final HashMap<String, QuestionType> types;
 
+  /**
+   * Constructs a {@code CardData}.
+   */
   public CardData() {
     this(Database.INSTANCE);
   }
 
-  // Might be useless
+  /**
+   * Constructs an {@code CardData} with the given {@code query}.
+   *
+   * @param database the {@code Database} to be used in the game
+   */
   public CardData(Database database) {
     this.query = new QueryImpl(database);
-    this.userDecks = new ArrayList<>();
-    this.answers = new ArrayList<>();
-    this.questionList = new ArrayList<>();
     this.types = new HashMap<>();
     this.setType();
   }
@@ -60,15 +57,10 @@ public class CardData {
    *
    * @throws SQLException if the database cannot be accessed
    */
-  public void instantiate(int id) throws SQLException {
+  public List<Deck> instantiate(int id) throws SQLException {
     this.setUser(id);
 
-    this.getDecks();
-//    for (Entry<String, String> deck : this.getDecks().entrySet()) {
-//      Deck d = new DeckBuilder().name(deck.getKey()).description(deck.getValue()).build();
-//      this.userDecks.add(d);
-//      d.addAll(this.getQuestions(d.getName()));
-//    }
+    return this.getDecks();
   }
 
   /**
@@ -81,22 +73,29 @@ public class CardData {
 
     this.result = this.query
             .SELECT("*").FROM("deck")
-            .WHERE("user_id = " + this.user.getKey()).query();
+            .WHERE("user_id = " + this.user.getKey())
+            .query();
 
     // QUERY: Gets the users decks name and description and puts them in a list of decks
-    try {
-      while (this.result.next()) {
-        decks.add(new DeckBuilder().name(this.result.getString("name")).description(this.result.getString("description")).build());
-      }
-    } catch (SQLException e) {
-      e.printStackTrace();
+    while (this.result.next()) {
+      decks.add(new DeckBuilder().name(this.result.getString("name")).description(this.result.getString("description")).build());
     }
 
     for (Deck deck : decks) {
-      System.out.printf("Deck: %s and description: %s \n", deck.getName(), deck.getDescription());
       deck.addAll(this.getQuestions(deck.getName()));
     }
-    return null;
+
+    return decks;
+  }
+
+  /**
+   * Sets the type of the questionType hashmap.
+   */
+  private void setType() {
+    this.types.put("MULTIPLE_CHOICE", QuestionType.MULTIPLE_CHOICE);
+    this.types.put("SHORT_RESPONSE", QuestionType.SHORT_RESPONSE);
+    this.types.put("LONG_RESPONSE", QuestionType.LONG_RESPONSE);
+    this.types.put("FILL_IN_THE_BLANK", QuestionType.FILL_IN_THE_BLANK);
   }
 
   /**
@@ -147,7 +146,8 @@ public class CardData {
 
     // QUERY: Gets the answer's text, correct/incorrect
     while (this.result.next()) {
-      AnswerType type = this.result.getBoolean("correct") ? AnswerType.CORRECT : AnswerType.INCORRECT;
+      AnswerType type = this.result.getBoolean("is_correct") ? AnswerType.CORRECT :
+              AnswerType.INCORRECT;
       String answer = this.result.getString("answer");
 
       answers.add(new AnswerFactory().createAnswer(answer, type));
@@ -157,24 +157,12 @@ public class CardData {
   }
 
   /**
-   * Sets the type of the question.
-   */
-  private void setType() {
-    this.types.put("MULTIPLE_CHOICE", QuestionType.MULTIPLE_CHOICE);
-    this.types.put("SHORT_RESPONSE", QuestionType.SHORT_RESPONSE);
-    this.types.put("LONG_RESPONSE", QuestionType.LONG_RESPONSE);
-    this.types.put("FILL_IN_THE_BLANK", QuestionType.FILL_IN_THE_BLANK);
-  }
-
-  /**
    * Sets the id of the user and the user's name into an Abstract hashmap.
    * This is used to store the user's id and name in the session.
    *
    * @param id the user's id
    */
   private void setUser(int id) throws SQLException {
-    this.userDecks = new ArrayList<>();
-
     this.result = this.query.SELECT("*").FROM("users")
             .WHERE("user_id = " + id + ";").query();
 

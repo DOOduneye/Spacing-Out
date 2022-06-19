@@ -7,6 +7,8 @@ import java.util.List;
 import model.Cards.Answers.Answer;
 import model.Cards.Answers.AnswerFactory;
 import model.Cards.Answers.AnswerType;
+import model.Cards.Decks.Deck;
+import model.Cards.Decks.DeckBuilder;
 import model.Cards.Questions.Question;
 import model.Cards.Questions.QuestionBuilder;
 import model.Cards.Questions.QuestionType;
@@ -43,7 +45,9 @@ public class test {
 
     System.out.println(Utils.compareList(answers, answers2));
 
-//    Deck deck = new Deck.DeckBuilder().name("Capitals").description("Capitals of the world")
-//            .add(question).add(question2).build();
+    Deck deck = new DeckBuilder().name("Capitals").description("Capitals of the world").build();
+    deck.add(question);
+    deck.add(question2);
+
   }
 }
