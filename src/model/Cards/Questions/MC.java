@@ -1,13 +1,13 @@
 package model.Cards.Questions;
 
-import java.util.HashMap;
+import java.util.List;
 
-import model.Cards.Answers.AnswerType;
+import model.Cards.Answers.Answer;
 
 /**
  * This class represents the state of a multiple choice question.
  */
-public class MC extends AbstractQuestion {
+public final class MC extends AbstractQuestion {
 
   /**
    * Constructor for MultipleChoice Questions.
@@ -16,7 +16,7 @@ public class MC extends AbstractQuestion {
    * @param answers  the possible answers
    * @throws IllegalArgumentException if question is null
    */
-  public MC(String question, HashMap<String, AnswerType> answers) {
+  MC(String question, List<Answer> answers) {
     super(question, answers);
   }
 

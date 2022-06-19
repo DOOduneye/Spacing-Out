@@ -24,3 +24,27 @@
 
 
  Handle a question with a hashmap
+
+-----------------------
+How to initalize a question
+Question question = new Question.QuestionBuilder()
+    .setQuestion("What is the capital of France?")
+    .setAnswer("Paris", AnswerType.CORRECT)
+    .setAnswer("London", AnswerType.INCORRECT)
+    .setAnswer("Berlin", AnswerType.INCORRECT).build();
+
+Questions2 question2 = new Questions2.QuestionBuilder()
+    .setQuestion("What is the capital of UK?")
+    .setAnswer("London", AnswerType.CORRECT)
+    .setAnswer("Paris", AnswerType.INCORRECT)
+    .setAnswer("Berlin", AnswerType.INCORRECT).build();
+
+How to initialize a deck of questions
+Deck deck = new Deck.DeckBuilder().name("Capitals").description("Capitals of the world").build();
+deck.addQuestions(question);
+deck.addQuestions(question2);
+
+List<Deck> decks = new ArrayList<Deck>();
+decks.add(deck);
+
+

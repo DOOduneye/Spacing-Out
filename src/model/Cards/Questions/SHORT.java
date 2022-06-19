@@ -1,22 +1,22 @@
 package model.Cards.Questions;
 
-import java.util.HashMap;
+import java.util.List;
 
-import model.Cards.Answers.AnswerType;
+import model.Cards.Answers.Answer;
 
 /**
  * This class represents the state of a short response question.
  */
-public class Short extends AbstractQuestion {
+public final class SHORT extends AbstractQuestion {
 
   /**
-   * Constructor for Short Questions.
+   * Constructor for Short Response Question.
    *
    * @param question the question
    * @param answer   the correct answer
    * @throws IllegalArgumentException if question is null
    */
-  public Short(String question, HashMap<String, AnswerType> answer) {
+  SHORT(String question, List<Answer> answer) {
     super(question, answer);
   }
 

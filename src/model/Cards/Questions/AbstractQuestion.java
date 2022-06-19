@@ -1,17 +1,20 @@
 package model.Cards.Questions;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Objects;
+import java.util.List;
 
+import model.Cards.Answers.Answer;
 import model.Cards.Answers.AnswerType;
+import model.Utils;
 
 /**
  * Abstract class for questions.
  */
 public abstract class AbstractQuestion implements Question {
   private final String question;
-  private final HashMap<String, AnswerType> answers;
-  // Update AnswerType enum to just be Answer
+  private final List<Answer> answers;
 
   /**
    * Constructor for AbstractQuestion.
@@ -20,10 +23,15 @@ public abstract class AbstractQuestion implements Question {
    * @param answers  the possible answers
    * @throws IllegalArgumentException if question is null
    */
-  protected AbstractQuestion(String question, HashMap<String, AnswerType> answers) throws IllegalArgumentException {
+  protected AbstractQuestion(String question, List<Answer> answers) throws IllegalArgumentException {
+    // might not be null due to where it is called from -> QuestionFactory.createQuestion
     this.question = Objects.requireNonNull(question);
-    this.answers = Objects.requireNonNull(answers);
-    this.getCorrectAnswers();
+    try {
+      this.answers = Objects.requireNonNull(answers);
+      Collections.shuffle(this.answers);
+    } catch (IllegalArgumentException e) {
+      throw new IllegalArgumentException("You must have at least one correct answer");
+    }
   }
 
   @Override
@@ -47,7 +55,8 @@ public abstract class AbstractQuestion implements Question {
     AbstractQuestion o = (AbstractQuestion) other;
     return this.getQuestionType().equals(o.getQuestionType()) &&
             this.getQuestion().equals(o.getQuestion()) &&
-            this.getAnswers().equals(o.getAnswers());
+            this.getAnswers().equals(o.getAnswers()) &&
+            Utils.compareList(this.getAnswers(), o.getAnswers());
   }
 
   @Override
@@ -56,24 +65,24 @@ public abstract class AbstractQuestion implements Question {
   }
 
   @Override
-  public HashMap<String, AnswerType> getCorrectAnswers() throws IllegalArgumentException {
-    if (!this.answers.containsValue(AnswerType.CORRECT)) {
-      throw new IllegalArgumentException("Required correct answer(s) not found");
+  public List<Answer> getCorrectAnswers() throws IllegalArgumentException {
+    List<Answer> correctAnswers = new ArrayList<>();
+
+    for (Answer a : this.answers) {
+      if (a.getType().equals(AnswerType.CORRECT)) {
+        correctAnswers.add(a);
+      }
     }
 
-    HashMap<String, AnswerType> correctAnswers = new HashMap<>();
-    this.answers.forEach((key, value) -> {
-      if (value == AnswerType.CORRECT) {
-        correctAnswers.put(key, value);
-      }
-    });
+    if (correctAnswers.isEmpty()) {
+      throw new IllegalArgumentException("No correct answers");
+    }
 
     return correctAnswers;
   }
 
   @Override
-  public HashMap<String, AnswerType> getAnswers() {
+  public List<Answer> getAnswers() {
     return this.answers;
   }
-
 }

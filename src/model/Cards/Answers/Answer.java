@@ -10,9 +10,7 @@ public interface Answer {
    *
    * @return true if the answer is correct, false otherwise.
    */
-  default boolean isCorrect() {
-    return false;
-  }
+  AnswerType getType();
 
   /**
    * The answer.

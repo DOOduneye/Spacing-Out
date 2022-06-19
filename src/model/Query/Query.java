@@ -5,6 +5,8 @@ package model.Query;
  * Queries are a hierarchical structure that builds upon each other, to then build a query, taking
  * advantage of the builder pattern.
  */
+
+// Consider a factory method to create a query.
 public interface Query {
 
   /**

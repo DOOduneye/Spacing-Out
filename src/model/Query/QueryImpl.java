@@ -1,13 +1,12 @@
 package model.Query;
 
-import java.io.IOException;
 import java.sql.Statement;
 
 import model.Database.Database;
-import model.Database.functions.DELETE;
-import model.Database.functions.INSERT;
-import model.Database.functions.SELECT;
-import model.Database.functions.UPDATE;
+import model.Query.functions.DELETE;
+import model.Query.functions.INSERT;
+import model.Query.functions.SELECT;
+import model.Query.functions.UPDATE;
 
 public final class QueryImpl implements Query {
   private final Database database;

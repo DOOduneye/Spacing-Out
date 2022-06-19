@@ -4,14 +4,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import model.Database.functions.AND;
-import model.Database.functions.FROM;
-import model.Database.functions.GROUP;
-import model.Database.functions.JOIN;
-import model.Database.functions.ON;
-import model.Database.functions.ORDER;
-import model.Database.functions.UNION;
-import model.Database.functions.WHERE;
+import model.Query.functions.AND;
+import model.Query.functions.FROM;
+import model.Query.functions.GROUP;
+import model.Query.functions.JOIN;
+import model.Query.functions.ON;
+import model.Query.functions.ORDER;
+import model.Query.functions.UNION;
+import model.Query.functions.WHERE;
 
 public class QueryBuilder {
   private final StringBuilder query;

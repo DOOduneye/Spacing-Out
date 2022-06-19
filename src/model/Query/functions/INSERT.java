@@ -1,4 +1,4 @@
-package model.Database.functions;
+package model.Query.functions;
 
 import java.util.function.Function;
 

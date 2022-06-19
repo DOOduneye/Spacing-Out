@@ -1,5 +1,6 @@
 package model.Cards.Decks;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import model.Cards.Questions.Question;
@@ -8,12 +9,11 @@ import model.Cards.Questions.Question;
  * This {@code DeckImpl} represents a deck of questions. It is a concrete implementation of the
  * {@code Deck} interface.
  */
-public class DeckImpl implements Deck {
-
+public final class DeckImpl implements Deck {
   private final String name;
   private final String description;
   private final List<Question> questions;
-  
+
   /**
    * Constructor for DeckImpl.
    *
@@ -21,10 +21,16 @@ public class DeckImpl implements Deck {
    * @param description the description of the deck
    * @param questions   the questions in the deck
    */
-  public DeckImpl(String name, String description, List<Question> questions) {
+  DeckImpl(String name, String description, List<Question> questions) {
     this.name = name;
     this.description = description;
     this.questions = questions;
+  }
+
+  DeckImpl(String name, String description) {
+    this.name = name;
+    this.description = description;
+    this.questions = new ArrayList<>();
   }
 
   @Override

@@ -1,13 +1,13 @@
 package model.Cards.Questions;
 
-import java.util.HashMap;
+import java.util.List;
 
-import model.Cards.Answers.AnswerType;
+import model.Cards.Answers.Answer;
 
 /**
  * This class represents the state of a fill in the blank question.
  */
-public class FITB extends AbstractQuestion {
+public final class FITB extends AbstractQuestion {
 
   /**
    * Constructor for FillInTheBlank Questions.
@@ -16,7 +16,7 @@ public class FITB extends AbstractQuestion {
    * @param answers  the possible answers
    * @throws IllegalArgumentException if question is null
    */
-  public FITB(String question, HashMap<String, AnswerType> answers) throws IllegalArgumentException {
+  FITB(String question, List<Answer> answers) throws IllegalArgumentException {
     super(question, answers);
   }
 

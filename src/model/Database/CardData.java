@@ -1,6 +1,5 @@
 package model.Database;
 
-import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -11,40 +10,44 @@ import java.util.Map.Entry;
 import java.util.AbstractMap.SimpleEntry;
 
 import model.Cards.Answers.Answer;
+import model.Cards.Answers.AnswerFactory;
+import model.Cards.Answers.AnswerType;
 import model.Cards.Answers.CorrectAnswer;
 import model.Cards.Decks.Deck;
+import model.Cards.Decks.DeckBuilder;
 import model.Cards.Decks.DeckImpl;
 import model.Cards.Answers.IncorrectAnswer;
-import model.Cards.Questions.Long;
-import model.Cards.Questions.MC;
 import model.Cards.Questions.Question;
-import model.Cards.Questions.Short;
+import model.Cards.Questions.QuestionBuilder;
+import model.Cards.Questions.QuestionType;
 import model.Query.Query;
 import model.Query.QueryImpl;
 
-public class FlashCardDatabase {
+public class CardData {
   private final Query query;
   private ResultSet result;
   private List<Deck> userDecks;
   private Entry<Integer, String> user;
   private final List<Answer> answers;
   private final ArrayList<Question> questionList;
+  private final HashMap<String, QuestionType> types;
 
-  public FlashCardDatabase() {
+  public CardData() {
     this(Database.INSTANCE);
   }
 
   // Might be useless
-  public FlashCardDatabase(Database database) {
+  public CardData(Database database) {
     this.query = new QueryImpl(database);
     this.userDecks = new ArrayList<>();
     this.answers = new ArrayList<>();
     this.questionList = new ArrayList<>();
+    this.types = new HashMap<>();
+    this.setType();
   }
 
   /**
    * Collects the SQL data from the database, and stores it in the appropriate data structures.
-   *
    *
    * <ul>
    * Data such as:
@@ -57,38 +60,43 @@ public class FlashCardDatabase {
    *
    * @throws SQLException if the database cannot be accessed
    */
-  public void instantiateFlashCard(int id) throws SQLException, IOException {
+  public void instantiate(int id) throws SQLException {
     this.setUser(id);
 
-    for (Entry<String, String> deck : this.getDecks().entrySet()) {
-//      System.out.println(deck.getKey() + ": " + deck.getValue());
-      this.userDecks.add(new DeckImpl(deck.getKey(), deck.getValue(), this.getQuestions(deck.getKey())));
-//      System.out.println(this.userDecks.size());
-    }
+    this.getDecks();
+//    for (Entry<String, String> deck : this.getDecks().entrySet()) {
+//      Deck d = new DeckBuilder().name(deck.getKey()).description(deck.getValue()).build();
+//      this.userDecks.add(d);
+//      d.addAll(this.getQuestions(d.getName()));
+//    }
   }
 
   /**
-   * Collects the decks from the database.
+   * Collects all decks from the database, for the given user.
    *
    * @return a map of deck names and descriptions
    */
-  private HashMap<String, String> getDecks() {
-    HashMap<String, String> deckContent = new HashMap<>();
+  private List<Deck> getDecks() throws SQLException {
+    List<Deck> decks = new ArrayList<>();
 
     this.result = this.query
             .SELECT("*").FROM("deck")
             .WHERE("user_id = " + this.user.getKey()).query();
 
-    // QUERY: Gets the users decks, all content
+    // QUERY: Gets the users decks name and description and puts them in a list of decks
     try {
       while (this.result.next()) {
-        deckContent.put(this.result.getString("name"), this.result.getString("description"));
+        decks.add(new DeckBuilder().name(this.result.getString("name")).description(this.result.getString("description")).build());
       }
     } catch (SQLException e) {
       e.printStackTrace();
     }
 
-    return deckContent;
+    for (Deck deck : decks) {
+      System.out.printf("Deck: %s and description: %s \n", deck.getName(), deck.getDescription());
+      deck.addAll(this.getQuestions(deck.getName()));
+    }
+    return null;
   }
 
   /**
@@ -98,7 +106,7 @@ public class FlashCardDatabase {
    * @throws SQLException if the query fails
    */
   private List<Question> getQuestions(String deckName) throws SQLException {
-    HashMap<Integer, Entry<String, String>> questions = new HashMap<>();
+    List<Question> questions = new ArrayList<>();
 
     this.result = this.query
             .SELECT("*")
@@ -112,69 +120,51 @@ public class FlashCardDatabase {
 
     // QUERY: Gets the question's text, type
     while (this.result.next()) {
-      questions.put(this.result.getInt("question_id"),
-              new SimpleEntry<>(this.result.getString("question"),
-                      this.result.getString("question_type")));
+      Question q = new QuestionBuilder()
+              .setQuestion(this.result.getString("question"))
+              .setType(this.types.get(this.result.getString("question_type")))
+              .addAllAnswers(this.getAnswers(this.result.getInt("question_id")))
+              .build();
 
+      questions.add(q);
     }
 
-//    this.getAnswers();
-
-    return this.questionList;
+    return questions;
   }
 
 
   /**
-   * Collects the answers from the database.
+   * Collects the answers from the database for the given question.
    *
    * @return the answers
    * @throws SQLException if the query fails
    */
-  private List<Answer> getAnswers(HashMap<Integer, Entry<String, String>> questions) throws SQLException {
-    for (Entry<Integer, Map.Entry<String, String>> question : questions.entrySet()) {
-      this.result = this.query.SELECT("*")
-              .FROM("answers")
-              .WHERE("question_id = " + question.getKey()).query();
+  private List<Answer> getAnswers(int id) throws SQLException {
+    List<Answer> answers = new ArrayList<>();
+    this.result = this.query.SELECT("*")
+            .FROM("answers")
+            .WHERE("question_id = " + id).query();
 
-      // QUERY: Gets the answer's text, correct/incorrect
-      while (this.result.next()) {
-        String answer = this.result.getString("answer");
-        boolean correct = this.result.getBoolean("is_correct");
+    // QUERY: Gets the answer's text, correct/incorrect
+    while (this.result.next()) {
+      AnswerType type = this.result.getBoolean("correct") ? AnswerType.CORRECT : AnswerType.INCORRECT;
+      String answer = this.result.getString("answer");
 
-        answers.add(correct ? new CorrectAnswer(answer) : new IncorrectAnswer(answer));
-      }
-
-//      this.setType(question);
-
-      answers.clear();
+      answers.add(new AnswerFactory().createAnswer(answer, type));
     }
-    return null;
+
+    return answers;
   }
 
   /**
    * Sets the type of the question.
-   *
-   * @param question the question to set the type of
    */
-  // TODO: Refactor this method
-//  private void setType(Map.Entry<Integer, Map.Entry<String, String>> question) {
-//    switch (question.getValue().getValue()) {
-//      case "multiplechoice":
-//        questionList.add(new MC(question.getValue().getKey(),
-//                new ArrayList<>(answers)));
-//        break;
-//      case "shortanswer":
-//        questionList.add(new Short(question.getValue().getKey(),
-//                new ArrayList<>(answers)));
-//        break;
-//      case "longanswer":
-//        questionList.add(new Long(question.getValue().getKey(),
-//                new ArrayList<>(answers)));
-//        break;
-//      default:
-//        break;
-//    }
-//  }
+  private void setType() {
+    this.types.put("MULTIPLE_CHOICE", QuestionType.MULTIPLE_CHOICE);
+    this.types.put("SHORT_RESPONSE", QuestionType.SHORT_RESPONSE);
+    this.types.put("LONG_RESPONSE", QuestionType.LONG_RESPONSE);
+    this.types.put("FILL_IN_THE_BLANK", QuestionType.FILL_IN_THE_BLANK);
+  }
 
   /**
    * Sets the id of the user and the user's name into an Abstract hashmap.
@@ -185,9 +175,7 @@ public class FlashCardDatabase {
   private void setUser(int id) throws SQLException {
     this.userDecks = new ArrayList<>();
 
-    this.result = this.query
-            .SELECT("*")
-            .FROM("users")
+    this.result = this.query.SELECT("*").FROM("users")
             .WHERE("user_id = " + id + ";").query();
 
     /* QUERY: Gets the username and user id and stores them in a hashmap */

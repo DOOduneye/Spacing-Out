@@ -1,8 +1,8 @@
 package model.Cards.Questions;
 
-import java.util.HashMap;
+import java.util.List;
 
-import model.Cards.Answers.AnswerType;
+import model.Cards.Answers.Answer;
 
 /**
  * This class represents the state of a question.
@@ -23,7 +23,6 @@ public interface QuestionState {
    */
   String getQuestion();
 
-  // TODO: Fix Answer class / Enum
   /**
    * Gets the correct answer(s).
    *
@@ -32,12 +31,12 @@ public interface QuestionState {
    * hashmap is the easiest way to go.
    * @throws IllegalStateException if no correct answer is found
    */
-  HashMap<String, AnswerType> getCorrectAnswers();
+  List<Answer> getCorrectAnswers();
 
   /**
    * Gets the answer(s).
    *
    * @return the answer(s).
    */
-  HashMap<String, AnswerType> getAnswers();
+  List<Answer> getAnswers();
 }
