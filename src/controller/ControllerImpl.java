@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Scanner;
 
 import model.Cards.Decks.Deck;
-import model.Cards.Questions.Question;
 import model.Database.CardData;
 import view.CardTextView;
 

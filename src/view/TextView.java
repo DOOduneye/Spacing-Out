@@ -10,7 +10,6 @@ public interface TextView {
    * Render the message to the provided data destination.
    *
    * @param message the message to be rendered
-   * @return
    * @throws IOException if transmission of the message to the provided data destination fails
    */
   void render(String message) throws IOException;
