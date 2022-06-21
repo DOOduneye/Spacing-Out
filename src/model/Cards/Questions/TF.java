@@ -5,23 +5,23 @@ import java.util.List;
 import model.Cards.Answers.Answer;
 
 /**
- * This class represents the state of a long response question.
+ * This class represents the state of a true/false question.
  */
-public final class LONG extends AbstractQuestion {
+public final class TF extends AbstractQuestion {
 
   /**
-   * Constructor for Long Response Question.
+   * Constructor for the True/False question.
    *
    * @param question the question
    * @param answer   the correct answer
    * @throws IllegalArgumentException if question is null
    */
-  LONG(String question, List<Answer> answer) {
+  TF(String question, List<Answer> answer) {
     super(question, answer);
   }
 
   @Override
   public QuestionType getQuestionType() {
-    return QuestionType.LONG_RESPONSE;
+    return QuestionType.TRUE_FALSE;
   }
 }

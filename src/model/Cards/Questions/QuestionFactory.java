@@ -23,5 +23,6 @@ public final class QuestionFactory {
     questionFactories.put(QuestionType.FILL_IN_THE_BLANK, FITB::new);
     questionFactories.put(QuestionType.SHORT_RESPONSE, SHORT::new);
     questionFactories.put(QuestionType.LONG_RESPONSE, LONG::new);
+    questionFactories.put(QuestionType.TRUE_FALSE, TF::new);
   }
 }

@@ -20,15 +20,30 @@ public enum Database {
     this.state = new DatabaseStateImpl();
   }
 
+  /**
+   * Returns the instance of the database
+   *
+   * @return the instance of the database
+   */
   public static Database instance() {
     return INSTANCE;
   }
 
-  // TODO: 'Statement' used without 'try'-with-resources statement whatever this means
+  /**
+   * Opens the database
+   *
+   * @return the {@code Statement} to be used in the database
+   * @throws IllegalStateException if the database is already open, or if it cannot be opened
+   */
   public Statement open() throws IllegalStateException {
     return this.state.openConnection();
   }
 
+  /**
+   * Closes the database
+   *
+   * @throws IllegalStateException if the database is already closed, or if it cannot be closed
+   */
   public void close() throws IllegalStateException {
     this.state.closeConnection();
   }

@@ -12,9 +12,9 @@ public interface QuestionState {
   /**
    * The question type.
    *
-   * @return the question type as a string.
+   * @return the question type of the question
    */
-  String getQuestionType();
+  QuestionType getQuestionType();
 
   /**
    * Returns the question text.
@@ -27,8 +27,8 @@ public interface QuestionState {
    * Gets the correct answer(s).
    *
    * @return a hashmap of the correct answers. It is sort of redundant to have a
-   * hashmap of the correct answers, but as we are currently working with an Enum, a
-   * hashmap is the easiest way to go.
+   *         hashmap of the correct answers, but as we are currently working with an Enum, a
+   *         hashmap is the easiest way to go.
    * @throws IllegalStateException if no correct answer is found
    */
   List<Answer> getCorrectAnswers();
@@ -36,7 +36,7 @@ public interface QuestionState {
   /**
    * Gets the answer(s).
    *
-   * @return the answer(s).
+   * @return the answer(s)
    */
   List<Answer> getAnswers();
 }

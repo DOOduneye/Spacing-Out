@@ -21,7 +21,7 @@ public final class FITB extends AbstractQuestion {
   }
 
   @Override
-  public String getQuestionType() {
-    return "Fill in the blank";
+  public QuestionType getQuestionType() {
+    return QuestionType.FILL_IN_THE_BLANK;
   }
 }

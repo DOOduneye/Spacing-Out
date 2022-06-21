@@ -21,7 +21,7 @@ public final class SHORT extends AbstractQuestion {
   }
 
   @Override
-  public String getQuestionType() {
-    return "ShortAnswer";
+  public QuestionType getQuestionType() {
+    return QuestionType.SHORT_RESPONSE;
   }
 }

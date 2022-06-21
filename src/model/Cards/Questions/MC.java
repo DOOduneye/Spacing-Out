@@ -21,8 +21,8 @@ public final class MC extends AbstractQuestion {
   }
 
   @Override
-  public String getQuestionType() {
-    return "MultipleChoiceAnswer";
+  public QuestionType getQuestionType() {
+    return QuestionType.MULTIPLE_CHOICE;
   }
 
 }

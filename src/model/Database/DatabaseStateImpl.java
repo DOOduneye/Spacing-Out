@@ -11,8 +11,6 @@ import Enviornment.ENV;
  * This {@code DatabaseStateImpl} class represents the state of the database. Handling the
  * connection between the database and the program.
  */
-// TODO: figure out how to protect this class, either through making it package-private or
-//  private or protected
 public final class DatabaseStateImpl implements DatabaseState {
 
   private Connection connection;

@@ -35,7 +35,7 @@ public abstract class AbstractQuestion implements Question {
   }
 
   @Override
-  abstract public String getQuestionType();
+  abstract public QuestionType getQuestionType();
 
   @Override
   public String getQuestion() {

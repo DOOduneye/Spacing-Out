@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.AbstractMap.SimpleEntry;
 
@@ -61,6 +62,24 @@ public class CardData {
     this.setUser(id);
 
     return this.getDecks();
+  }
+
+  /**
+   * Gets a hashmap of the user's names and ids.
+   *
+   * @return a hashmap of the user's names and ids
+   * @throws SQLException if the database cannot be accessed
+   */
+  public HashMap<String, Integer> getUsers() throws SQLException {
+    HashMap<String, Integer> users = new HashMap<>();
+
+    this.result = this.query.SELECT("*").FROM("users").query();
+
+    while (this.result.next()) {
+      users.put(this.result.getString("name"), this.result.getInt("user_id"));
+    }
+
+    return users;
   }
 
   /**
